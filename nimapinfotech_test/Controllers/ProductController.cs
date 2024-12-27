@@ -5,16 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList.Mvc;
+using PagedList;
+using System.Web.UI;
 
 namespace nimapinfotech_test.Controllers
 {
     public class ProductController : Controller
     {
-        public ActionResult GetAllproducts()
+        public ActionResult GetAllproducts(int? Page)
         {
+           
+            
             productrepository productRepo = new productrepository();
+            
             ModelState.Clear();
-            return View(productRepo.GetAllProduct());
+            return View(productRepo.GetAllProduct().ToPagedList(Page ??1,6));
         }
         public ActionResult Addproduct()
         {

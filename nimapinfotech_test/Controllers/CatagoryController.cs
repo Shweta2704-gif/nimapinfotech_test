@@ -5,16 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using PagedList;
+using PagedList.Mvc;
 
 namespace nimapinfotech_test.Controllers
 {
     public class CatagoryController : Controller
     {
-        public ActionResult GetAllCatagories()
+        public ActionResult GetAllCatagories(int? page)
         {
+            //int PageSize = 10;
+            //int pageIndex = 1;
+            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             catagoryrepository catagoryRepo = new catagoryrepository();
             ModelState.Clear();
-            return View(catagoryRepo.GetAllCatagory());
+            return View(catagoryRepo.GetAllCatagory().ToPagedList(page ?? 1, 6));
         }
         public ActionResult AddCatagory()
         {

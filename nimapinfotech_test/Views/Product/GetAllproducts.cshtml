@@ -1,4 +1,6 @@
-﻿@model IEnumerable<nimapinfotech_test.Models.Product>
+﻿@using PagedList;
+@using PagedList.Mvc; 
+@model IPagedList<nimapinfotech_test.Models.Product>
 
 <p>
     @Html.ActionLink("Create New", "Addproduct")
@@ -6,13 +8,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.productname)
+            @Html.DisplayNameFor(model => model.First().productname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.catagoryname)
+            @Html.DisplayNameFor(model => model.First().catagoryname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.catagoryid)
+            @Html.DisplayNameFor(model => model.First().catagoryid)
         </th>
         <th></th>
     </tr>
@@ -37,3 +39,4 @@
 }
 
 </table>
+@Html.PagedListPager(Model, Page => Url.Action("GetAllproducts", new {Page}))
