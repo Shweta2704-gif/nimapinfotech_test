@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nimapinfotech_test", "nimapinfotech_test\nimapinfotech_test.csproj", "{54A595FC-4BC6-49E3-B096-6AEDC13C1570}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54A595FC-4BC6-49E3-B096-6AEDC13C1570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A595FC-4BC6-49E3-B096-6AEDC13C1570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A595FC-4BC6-49E3-B096-6AEDC13C1570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A595FC-4BC6-49E3-B096-6AEDC13C1570}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A27A9A7C-311C-42CE-A0C8-00D549CA12BA}
+	EndGlobalSection
+EndGlobal

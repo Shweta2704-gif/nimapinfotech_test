@@ -1,0 +1,32 @@
+﻿@model IEnumerable<nimapinfotech_test.Models.Catagory>
+
+<p>
+    @Html.ActionLink("Create New", "AddCatagory")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.catagoryname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.productid)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.catagoryname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.productid)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditcatagoryDetails", new { id = item.catagoryid }) |
+            @Html.ActionLink("Delete", "Deletecatagory", new { id = item.catagoryid })
+        </td>
+    </tr>
+}
+
+</table>
