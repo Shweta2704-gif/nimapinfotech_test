@@ -5,22 +5,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PagedList.Mvc;
-using PagedList;
 using System.Web.UI;
+using System.Collections.Generic;
 
 namespace nimapinfotech_test.Controllers
 {
     public class ProductController : Controller
     {
-        public ActionResult GetAllproducts(int? Page)
+        private readonly productrepository prorepo = new productrepository();
+        //public ActionResult GetAllproducts()
+        //{
+
+
+        //   // productrepository productRepo = new productrepository();
+
+        //    ModelState.Clear();
+        //    return View(prorepo.GetAllProduct());
+        //}
+        public ActionResult GetAllproducts(int pageNumber = 1, int pageSize = 10)
         {
+          
+            var allProducts = prorepo.GetAllProduct();
+
+            if (allProducts == null || !allProducts.Any())
+            {
+             
+                allProducts = new List<Product>();
+            }
+
            
+            int totalRecords = allProducts.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+        
+            var paginatedProducts = allProducts
+                                    .OrderBy(p => p.productid) 
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToList();
+
+          
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = totalPages;
+
             
-            productrepository productRepo = new productrepository();
-            
-            ModelState.Clear();
-            return View(productRepo.GetAllProduct().ToPagedList(Page ??1,6));
+            return View(paginatedProducts);
         }
         public ActionResult Addproduct()
         {
@@ -33,8 +63,8 @@ namespace nimapinfotech_test.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    productrepository productRepo = new productrepository();
-                    if (productRepo.Addproduct(products))
+                    //productrepository productRepo = new productrepository();
+                    if (prorepo.Addproduct(products))
                     {
                         ViewBag.Message = "product details added successfully";
                     }
@@ -48,20 +78,34 @@ namespace nimapinfotech_test.Controllers
                 return View();
             }
         }
+        //public ActionResult EditproductDetails(int id)
+        //{
+        //    //productrepository productRepo = new productrepository();
+
+        //    return View(prorepo.GetAllProduct().Select(Emp => Emp.productid == id));
+        //}
         public ActionResult EditproductDetails(int id)
         {
-            productrepository productRepo = new productrepository();
+            
+            var product = prorepo.GetAllProduct().FirstOrDefault(p => p.productid == id);
 
-            return View(productRepo.GetAllProduct().Find(Emp => Emp.productid == id));
+            if (product == null)
+            {
+                
+                return HttpNotFound("Product not found.");
+            }
+
+            return View(product);
         }
+
         [HttpPost]
         public ActionResult EditproductDetails(int id, Product obj)
         {
             try
             {
-                productrepository productRepo = new productrepository();
+                //productrepository productRepo = new productrepository();
 
-                productRepo.UpdateProduct(obj);
+                prorepo.UpdateProduct(obj);
                 return RedirectToAction("GetAllProducts");
             }
             catch
@@ -73,9 +117,9 @@ namespace nimapinfotech_test.Controllers
         {
             try
             {
-                productrepository productRepo = new productrepository();
+                //productrepository productRepo = new productrepository();
 
-                if (productRepo.Deleteproduct(id))
+                if (prorepo.Deleteproduct(id))
                 {
                     ViewBag.AlertMsg = "product details deleted successfully";
                 }

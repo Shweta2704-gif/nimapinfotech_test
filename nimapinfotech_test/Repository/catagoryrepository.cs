@@ -6,10 +6,13 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using nimapinfotech_test.Models;
+using System.Collections.Generic;
+using nimapinfotech_test.Interface;
+
 
 namespace nimapinfotech_test.Repository
 {
-    public class catagoryrepository
+    public class catagoryrepository:ICatagoryRepository
     {
          private SqlConnection con;
 
@@ -44,7 +47,7 @@ namespace nimapinfotech_test.Repository
         }
 
        
-        public List<Catagory> GetAllCatagory()
+        public IEnumerable<Catagory> GetAllCatagory()
         {
             connection();
             List<Catagory> catagoryList = new List<Catagory>();
@@ -99,7 +102,7 @@ namespace nimapinfotech_test.Repository
             }
         }
 
-        public bool Deletecatagory(int Id)
+        public bool Deletecatagory(int? Id)
         {
             connection();
             SqlCommand com = new SqlCommand("deletecatagory", con);
@@ -119,5 +122,7 @@ namespace nimapinfotech_test.Repository
                 return false;
             }
         }
+
+       
     }
 }

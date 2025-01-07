@@ -13,15 +13,45 @@ namespace nimapinfotech_test.Controllers
 {
     public class CatagoryController : Controller
     {
-        public ActionResult GetAllCatagories(int? page)
+        private readonly catagoryrepository catrepo = new catagoryrepository();
+        //public ActionResult GetAllCatagories()
+        //{
+
+        //    //catagoryrepository catagoryRepo = new catagoryrepository();
+        //    ModelState.Clear();
+        //    return View(catrepo.GetAllCatagory());
+        //}
+        public ActionResult GetAllCatagories(int pageNumber = 1, int pageSize = 10)
         {
-            //int PageSize = 10;
-            //int pageIndex = 1;
-            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            catagoryrepository catagoryRepo = new catagoryrepository();
-            ModelState.Clear();
-            return View(catagoryRepo.GetAllCatagory().ToPagedList(page ?? 1, 6));
+
+            var allcatgaory = catrepo.GetAllCatagory();
+
+            if (allcatgaory == null || !allcatgaory.Any())
+            {
+
+                allcatgaory = new List<Catagory>();
+            }
+
+
+            int totalRecords = allcatgaory.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+
+            var paginatedProducts = allcatgaory
+                                    .OrderBy(p => p.catagoryid)
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToList();
+
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = totalPages;
+
+
+            return View(paginatedProducts);
         }
+
         public ActionResult AddCatagory()
         {
             return View();
@@ -33,7 +63,7 @@ namespace nimapinfotech_test.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    catagoryrepository catrepo = new catagoryrepository();
+                   // catagoryrepository catrepo = new catagoryrepository();
 
                     if (catrepo.AddCatagory(catagory))
                     {
@@ -50,20 +80,33 @@ namespace nimapinfotech_test.Controllers
                 return View();
             }
         }
+        //public ActionResult EditcatagoryDetails(int id)
+        //{
+        //   // catagoryrepository catRepo = new catagoryrepository();
+
+        //    return View(catrepo.GetAllCatagory().Select(Emp => Emp.catagoryid == id));
+        //}
         public ActionResult EditcatagoryDetails(int id)
         {
-            catagoryrepository catRepo = new catagoryrepository();
 
-            return View(catRepo.GetAllCatagory().Find(Emp => Emp.catagoryid == id));
+            var catagory = catrepo.GetAllCatagory().FirstOrDefault(c => c.catagoryid == id);
+
+            if (catagory == null)
+            {
+
+                return HttpNotFound("Product not found.");
+            }
+
+            return View(catagory);
         }
         [HttpPost]
         public ActionResult EditcatagoryDetails(int id, Catagory obj)
         {
             try
             {
-                catagoryrepository catRepo = new catagoryrepository();
+                //catagoryrepository catRepo = new catagoryrepository();
 
-                catRepo.UpdateCatagory(obj);
+                catrepo.UpdateCatagory(obj);
                 return RedirectToAction("GetAllCatagories");
             }
             catch
@@ -75,8 +118,8 @@ namespace nimapinfotech_test.Controllers
         {
             try
             {
-                catagoryrepository catRepo = new catagoryrepository();
-                if (catRepo.Deletecatagory(id))
+                //catagoryrepository catRepo = new catagoryrepository();
+                if (catrepo.Deletecatagory(id))
                 {
                     ViewBag.AlertMsg = "catagory details deleted successfully";
                 }
@@ -86,7 +129,10 @@ namespace nimapinfotech_test.Controllers
             {
                 return View();
             }
+
         }
+
+
     }
 
 }

@@ -1,11 +1,10 @@
-﻿@using PagedList;
-@using PagedList.Mvc; 
-@model IPagedList<nimapinfotech_test.Models.Product>
-
+﻿@model IEnumerable<nimapinfotech_test.Models.Product>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <p>
     @Html.ActionLink("Create New", "Addproduct")
 </p>
-<table class="table">
+<table class="table"id="tbl_catagory">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.First().productname)
@@ -19,24 +18,57 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.productname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.catagoryname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.catagoryid)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditproductDetails", new { id=item.productid }) |
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.productname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catagoryname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catagoryid)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditproductDetails", new { id = item.productid }) |
 
-            @Html.ActionLink("Delete", "Deleteproduct", new { id=item.productid })
-        </td>
-    </tr>
-}
+                @Html.ActionLink("Delete", "Deleteproduct", new { id = item.productid })
+            </td>
+        </tr>
+    }
 
 </table>
-@Html.PagedListPager(Model, Page => Url.Action("GetAllproducts", new {Page}))
+<div class="pagination">
+ Previous Page Button 
+@if (ViewBag.CurrentPage > 1)
+{
+    <a href="@Url.Action("GetAllproducts", new { pageNumber = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize })" class="btn btn-primary">Previous</a>
+}
+else
+{
+    <button class="btn btn-primary" disabled>Previous</button>
+}
+ Page Numbers 
+@for (int i = 1; i <= ViewBag.TotalPages; i++)
+{
+    if (i == ViewBag.CurrentPage)
+    {
+        <span class="btn btn-secondary">@i</span>
+    }
+    else
+    {
+        <a href="@Url.Action("GetAllproducts", new { pageNumber = i, pageSize = ViewBag.PageSize })" class="btn btn-outline-primary">@i</a>
+    }
+}
+ Next Page Button 
+@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a href="@Url.Action("GetAllproducts", new { pageNumber = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize })" class="btn btn-primary">Next</a>
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>Next</button>
+    }
+</div>
+            

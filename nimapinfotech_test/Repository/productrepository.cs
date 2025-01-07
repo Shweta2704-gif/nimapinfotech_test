@@ -6,10 +6,12 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Collections.Generic;
+using nimapinfotech_test.Interface;
 
 namespace nimapinfotech_test.Repository
 {
-    public class productrepository
+    public class productrepository:IProductrepository
     {
         private SqlConnection con;
 
@@ -44,7 +46,7 @@ namespace nimapinfotech_test.Repository
         }
 
 
-        public List<Product> GetAllProduct()
+        public IEnumerable<Product> GetAllProduct()
         {
             connection();
             List<Product> productList = new List<Product>();
@@ -101,7 +103,7 @@ namespace nimapinfotech_test.Repository
             }
         }
 
-        public bool Deleteproduct(int Id)
+        public bool Deleteproduct(int? Id)
         {
             connection();
             SqlCommand com = new SqlCommand("DeleteProduct", con);
